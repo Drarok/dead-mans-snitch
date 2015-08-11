@@ -58,7 +58,7 @@ describe('APIClient', function () {
         client.getSnitch();
       };
 
-      expect(get).toThrowError('Missing token');
+      expect(get).toThrowError('Missing parameter');
     });
 
     it('should accept a token', function () {
@@ -149,17 +149,7 @@ describe('APIClient', function () {
         client.editSnitch(snitch);
       };
 
-      expect(error).toThrowError('Cannot pause a snitch without a token');
-    });
-
-    it('should accept a token', function () {
-      client.pauseSnitch('12345');
-      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/12345/pause');
-    });
-
-    it('should accept a snitch', function () {
-      client.pauseSnitch('12345');
-      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/12345/pause');
+      expect(error).toThrowError('Cannot edit a snitch without a token');
     });
 
     it('should make a request to edit the snitch', function () {
@@ -182,16 +172,16 @@ describe('APIClient', function () {
     });
   });
 
-  describe('pauseSnitch', function  () {
+  describe('pauseSnitch', function () {
     it('should error when no snitch given', function () {
       var error = function () {
         client.pauseSnitch();
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Missing parameter');
     });
 
-    it('should error when non-snitch given', function () {
+    it('should error when non-snitch object given', function () {
       var error = function () {
         client.pauseSnitch({});
       };
@@ -208,10 +198,25 @@ describe('APIClient', function () {
         client.pauseSnitch(snitch);
       };
 
-      expect(error).toThrowError('Cannot edit a snitch without a token');
+      expect(error).toThrowError('Cannot pause a snitch without a token');
     });
 
-    it('should make a request to edit the snitch', function () {
+    it('should accept a token', function () {
+      client.pauseSnitch('c2354d53d2');
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/pause');
+    });
+
+    it('should accept a snitch object', function () {
+      var snitch = new Snitch({
+        name: 'Hello',
+        interval: '15_minute'
+      });
+      snitch.token = 'c2354d53d2';
+      client.pauseSnitch(snitch);
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/pause');
+    });
+
+    it('should make a request to pause the snitch', function () {
       var snitch = new Snitch({
         name: 'Hello',
         interval: '15_minute'
@@ -220,14 +225,7 @@ describe('APIClient', function () {
       snitch.tags = ['hello', 'world'];
 
       client.pauseSnitch(snitch);
-      expect(client.makeRequest).toHaveBeenCalledWith('PATCH', '/snitches/c2354d53d2', {
-        name: 'Hello',
-        type: {
-          interval: '15_minute'
-        },
-        notes: '',
-        tags: ['hello', 'world']
-      });
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/pause');
     });
   });
 
