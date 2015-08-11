@@ -25,10 +25,7 @@ gulp.task('jshint', function () {
 gulp.task('jasmine', function () {
   var specs = ['spec/**/*.spec.js'];
   return gulp.src(specs)
-    .pipe(jasmine({
-      includeStackTrace: true,
-      verbose: true
-    }));
+    .pipe(jasmine());
 });
 
 gulp.task('watch', function () {
