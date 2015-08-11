@@ -31,6 +31,10 @@ gulp.task('jasmine', function () {
     }));
 });
 
+gulp.task('watch', function () {
+  gulp.watch(source, ['default']);
+});
+
 gulp.task('standards', ['jshint', 'jscs']);
 gulp.task('test', ['jasmine']);
 gulp.task('default', ['jasmine', 'jshint', 'jscs']);
