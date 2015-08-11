@@ -198,7 +198,7 @@ describe('APIClient', function () {
         client.pauseSnitch(snitch);
       };
 
-      expect(error).toThrowError('Cannot pause a snitch without a token');
+      expect(error).toThrowError('Missing token');
     });
 
     it('should accept a token', function () {
@@ -235,7 +235,7 @@ describe('APIClient', function () {
         client.deleteSnitch();
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Missing parameter');
     });
 
     it('should error when non-snitch given', function () {
@@ -255,7 +255,7 @@ describe('APIClient', function () {
         client.deleteSnitch(snitch);
       };
 
-      expect(error).toThrowError('Cannot delete a snitch without a token');
+      expect(error).toThrowError('Missing token');
     });
 
     it('should make a request to delete the snitch', function () {
