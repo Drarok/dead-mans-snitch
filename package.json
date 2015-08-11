@@ -1,0 +1,20 @@
+{
+  "name": "dead-mans-snitch",
+  "version": "0.0.1",
+  "description": "API client for Dead Man's Snitch (https://deadmanssnitch.com)",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "author": "Mat Gadd <source@catchall.drarok.com>",
+  "license": "MIT",
+  "dependencies": {
+    "request-promise": "^0.4.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-jscs": "^2.0.0",
+    "gulp-jshint": "^1.11.2"
+  }
+}

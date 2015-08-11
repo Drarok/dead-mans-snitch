@@ -1,0 +1,6 @@
+{
+  "jasmine": true,
+  "node": true,
+  "undef": true,
+  "unused": "vars"
+}
