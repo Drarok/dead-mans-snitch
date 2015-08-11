@@ -149,7 +149,17 @@ describe('APIClient', function () {
         client.editSnitch(snitch);
       };
 
-      expect(error).toThrowError('Cannot edit a snitch without a token');
+      expect(error).toThrowError('Cannot pause a snitch without a token');
+    });
+
+    it('should accept a token', function () {
+      client.pauseSnitch('12345');
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/12345/pause');
+    });
+
+    it('should accept a snitch', function () {
+      client.pauseSnitch('12345');
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/12345/pause');
     });
 
     it('should make a request to edit the snitch', function () {
@@ -161,6 +171,55 @@ describe('APIClient', function () {
       snitch.tags = ['hello', 'world'];
 
       client.editSnitch(snitch);
+      expect(client.makeRequest).toHaveBeenCalledWith('PATCH', '/snitches/c2354d53d2', {
+        name: 'Hello',
+        type: {
+          interval: '15_minute'
+        },
+        notes: '',
+        tags: ['hello', 'world']
+      });
+    });
+  });
+
+  describe('pauseSnitch', function  () {
+    it('should error when no snitch given', function () {
+      var error = function () {
+        client.pauseSnitch();
+      };
+
+      expect(error).toThrowError('Invalid parameter');
+    });
+
+    it('should error when non-snitch given', function () {
+      var error = function () {
+        client.pauseSnitch({});
+      };
+
+      expect(error).toThrowError('Invalid parameter');
+    });
+
+    it('should error when snitch has no token', function () {
+      var error = function () {
+        var snitch = new Snitch({
+          name: 'Hello',
+          interval: '15_minute'
+        });
+        client.pauseSnitch(snitch);
+      };
+
+      expect(error).toThrowError('Cannot edit a snitch without a token');
+    });
+
+    it('should make a request to edit the snitch', function () {
+      var snitch = new Snitch({
+        name: 'Hello',
+        interval: '15_minute'
+      });
+      snitch.token = 'c2354d53d2';
+      snitch.tags = ['hello', 'world'];
+
+      client.pauseSnitch(snitch);
       expect(client.makeRequest).toHaveBeenCalledWith('PATCH', '/snitches/c2354d53d2', {
         name: 'Hello',
         type: {
