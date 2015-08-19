@@ -4,7 +4,7 @@
   "description": "API client for Dead Man's Snitch (https://deadmanssnitch.com)",
   "main": "lib/index.js",
   "scripts": {
-    "test": "gulp"
+    "test": "node_modules/.bin/gulp"
   },
   "author": "Mat Gadd <source@catchall.drarok.com>",
   "license": "MIT",
