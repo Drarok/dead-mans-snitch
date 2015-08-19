@@ -129,6 +129,25 @@ describe('APIClient', function () {
         tags: []
       });
     });
+
+    it('should result in a snitch object', function () {
+      client.createSnitch(new Snitch({
+        name: 'New Snitch',
+        interval: '15_minute'
+      }));
+
+      var snitch = responseProcessor({
+        token: 'c2354d53d2',
+        name: 'Created Snitch',
+        type: {
+          interval: '15_minute'
+        }
+      });
+
+      expect(snitch).toEqual(jasmine.any(Snitch));
+      expect(snitch.token).toEqual('c2354d53d2');
+      expect(snitch.name).toEqual('Created Snitch');
+    });
   });
 
   describe('editSnitch', function () {
@@ -177,6 +196,28 @@ describe('APIClient', function () {
         notes: '',
         tags: ['hello', 'world']
       });
+    });
+
+    it('should result in a snitch object', function () {
+      var snitch = new Snitch({
+        name: 'Edited Snitch',
+        interval: '15_minute'
+      });
+      snitch.token = 'c2354d53d2';
+
+      client.editSnitch(snitch);
+
+      var actual = responseProcessor({
+        token: 'c2354d53d2',
+        name: 'Edited Snitch',
+        type: {
+          interval: '15_minute'
+        }
+      });
+
+      expect(actual).toEqual(jasmine.any(Snitch));
+      expect(actual.token).toEqual('c2354d53d2');
+      expect(actual.name).toEqual('Edited Snitch');
     });
   });
 
