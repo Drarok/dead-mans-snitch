@@ -1,6 +1,6 @@
 {
   "name": "dead-mans-snitch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "API client for Dead Man's Snitch (https://deadmanssnitch.com)",
   "main": "lib/index.js",
   "scripts": {
