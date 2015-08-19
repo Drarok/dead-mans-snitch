@@ -76,8 +76,8 @@ fetchSnitchSomehow()
 fetchSnitchSomehow()
   .then(function (snitch) {
     return client.addTags(snitch, ['production', 'backup'])
-  }).then(function (snitch) {
-    console.log(snitch.token, 'now has tags', snitch.tags);
+  }).then(function (tags) {
+    console.log('Snitch now has tags', tags);
   });
 ```
 
@@ -85,8 +85,8 @@ OR
 
 ```js
 client.addTags('abc123', ['production', 'backup'])
-  .then(function (snitch) {
-    console.log(snitch.token, 'now has tags', snitch.tags);
+  .then(function (tags) {
+    console.log('Snitch now has tags', tags);
   });
 ```
 
@@ -96,8 +96,8 @@ client.addTags('abc123', ['production', 'backup'])
 fetchSnitchSomehow()
   .then(function (snitch) {
     return client.removeTag(snitch, 'production')
-  }).then(function (snitch) {
-    console.log(snitch.token, 'now has tags', snitch.tags);
+  }).then(function () {
+    console.log('Removed!');
   });
 ```
 
@@ -105,8 +105,8 @@ OR
 
 ```js
 client.removeTag('abc123', 'production')
-  .then(function (snitch) {
-    console.log(snitch.token, 'now has tags', snitch.tags);
+  .then(function () {
+    console.log('Removed!');
   });
 ```
 
@@ -130,8 +130,8 @@ fetchSnitchSomehow()
 fetchSnitchSomehow()
   .then(function (snitch) {
     return client.pauseSnitch(snitch);
-  }).then(function (snitch) {
-    console.log('Paused', snitch.token);
+  }).then(function () {
+    console.log('Paused');
   });
 ```
 
