@@ -65,8 +65,62 @@ fetchSnitchSomehow()
   .then(function (snitch) {
     snitch.notes = 'This is now using the new version of Backup';
     return client.editSnitch(snitch);
+  }).then(function (snitch) {
+    console.log('Edited', snitch.token);
+  });
+```
+
+### Adding one or more tags to a snitch
+
+```js
+fetchSnitchSomehow()
+  .then(function (snitch) {
+    return client.addTags(snitch, ['production', 'backup'])
+  }).then(function (tags) {
+    console.log('Snitch now has tags', tags);
+  });
+```
+
+OR
+
+```js
+client.addTags('abc123', ['production', 'backup'])
+  .then(function (tags) {
+    console.log('Snitch now has tags', tags);
+  });
+```
+
+### Removing a tag from a snitch
+
+```js
+fetchSnitchSomehow()
+  .then(function (snitch) {
+    return client.removeTag(snitch, 'production')
   }).then(function () {
-    console.log('Edited!');
+    console.log('Removed!');
+  });
+```
+
+OR
+
+```js
+client.removeTag('abc123', 'production')
+  .then(function () {
+    console.log('Removed!');
+  });
+```
+
+### Changing tags on a snitch
+
+To replace all the tags on a snitch, use `client.editSnitch()`:
+
+```js
+fetchSnitchSomehow()
+  .then(function (snitch) {
+    snitch.tags = ['production', 'backup'];
+    return client.editSnitch(snitch);
+  }).then(function (snitch) {
+    console.log('Edited', snitch.token);
   });
 ```
 
@@ -77,7 +131,7 @@ fetchSnitchSomehow()
   .then(function (snitch) {
     return client.pauseSnitch(snitch);
   }).then(function () {
-    console.log('Paused!');
+    console.log('Paused');
   });
 ```
 
