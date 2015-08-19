@@ -1,4 +1,4 @@
-# Dead Man's Snitch [![Build Status](https://travis-ci.org/Drarok/dead-mans-snitch.svg)](https://travis-ci.org/Drarok/dead-mans-snitch)
+# Dead Man's Snitch [![Build Status](https://travis-ci.org/Drarok/dead-mans-snitch.svg?branch=master)](https://travis-ci.org/Drarok/dead-mans-snitch)
 
 This package provides a node.js library for talking to [Dead Man's Snitch](https://deadmanssnitch.com).
 
