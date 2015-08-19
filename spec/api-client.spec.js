@@ -53,15 +53,15 @@ describe('APIClient', function () {
   });
 
   describe('getSnitch', function () {
-    it('should error when no token passed', function () {
+    it('should error when no snitch', function () {
       var get = function () {
         client.getSnitch();
       };
 
-      expect(get).toThrowError('Missing parameter');
+      expect(get).toThrowError('Missing snitch');
     });
 
-    it('should accept a token', function () {
+    it('should accept a snitch id', function () {
       client.getSnitch('c2354d53d2');
       expect(client.makeRequest).toHaveBeenCalledWith('GET', '/snitches/c2354d53d2');
     });
@@ -97,14 +97,22 @@ describe('APIClient', function () {
 
   describe('createSnitch', function () {
     it('should error when no snitch given', function () {
-      var create = function () {
+      var error = function () {
         client.createSnitch();
       };
 
-      expect(create).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Missing snitch');
     });
 
-    it('should make a request to create the snitch', function () {
+    it('should error when non-snitch object given', function () {
+      var error = function () {
+        client.createSnitch({});
+      };
+
+      expect(error).toThrowError('Invalid snitch');
+    });
+
+    it('should accept a snitch object', function () {
       var snitch = new Snitch({
         name: 'New Snitch',
         interval: '15_minute'
@@ -129,15 +137,15 @@ describe('APIClient', function () {
         client.editSnitch();
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Missing snitch');
     });
 
-    it('should error when non-snitch given', function () {
+    it('should error when non-snitch object given', function () {
       var error = function () {
         client.editSnitch({});
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Invalid snitch');
     });
 
     it('should error when snitch has no token', function () {
@@ -152,7 +160,7 @@ describe('APIClient', function () {
       expect(error).toThrowError('Cannot edit a snitch without a token');
     });
 
-    it('should make a request to edit the snitch', function () {
+    it('should accept a snitch object', function () {
       var snitch = new Snitch({
         name: 'Hello',
         interval: '15_minute'
@@ -172,13 +180,86 @@ describe('APIClient', function () {
     });
   });
 
+  describe('addTags', function () {
+    it('should error when no snitch given', function () {
+      var error = function () {
+        client.addTags();
+      };
+
+      expect(error).toThrowError('Missing snitch');
+    });
+
+    it('should error when non-snitch object given', function () {
+      var error = function () {
+        client.addTags({});
+      };
+
+      expect(error).toThrowError('Invalid snitch');
+    });
+
+    it('should error when snitch has no token', function () {
+      var error = function () {
+        var snitch = new Snitch({
+          name: 'Hello',
+          interval: '15_minute'
+        });
+        client.addTags(snitch);
+      };
+
+      expect(error).toThrowError('Missing token');
+    });
+
+    it('should error when no tags given', function () {
+      var error = function () {
+        client.addTags('abc123');
+      };
+
+      expect(error).toThrowError('Missing tags');
+    });
+
+    it('should error when invalid tags given', function () {
+      var error = function () {
+        client.addTags('abc123', {});
+      };
+
+      expect(error).toThrowError('Invalid tags');
+    });
+
+    it('should error when empty tags given', function () {
+      var error = function () {
+        client.addTags('abc123', []);
+      };
+
+      expect(error).toThrowError('Invalid tags');
+    });
+
+    it('should accept a token and tags', function () {
+      client.addTags('c2354d53d2', ['production']);
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/tags', ['production']);
+    });
+
+    it('should accept a snitch object and tags', function () {
+      var snitch = new Snitch({
+        name: 'Hello',
+        interval: '15_minute'
+      });
+      snitch.token = 'c2354d53d2';
+      client.addTags(snitch, ['production']);
+      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/tags', ['production']);
+    });
+  });
+
+  describe('removeTag', function () {
+
+  });
+
   describe('pauseSnitch', function () {
     it('should error when no snitch given', function () {
       var error = function () {
         client.pauseSnitch();
       };
 
-      expect(error).toThrowError('Missing parameter');
+      expect(error).toThrowError('Missing snitch');
     });
 
     it('should error when non-snitch object given', function () {
@@ -186,7 +267,7 @@ describe('APIClient', function () {
         client.pauseSnitch({});
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Invalid snitch');
     });
 
     it('should error when snitch has no token', function () {
@@ -215,18 +296,6 @@ describe('APIClient', function () {
       client.pauseSnitch(snitch);
       expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/pause');
     });
-
-    it('should make a request to pause the snitch', function () {
-      var snitch = new Snitch({
-        name: 'Hello',
-        interval: '15_minute'
-      });
-      snitch.token = 'c2354d53d2';
-      snitch.tags = ['hello', 'world'];
-
-      client.pauseSnitch(snitch);
-      expect(client.makeRequest).toHaveBeenCalledWith('POST', '/snitches/c2354d53d2/pause');
-    });
   });
 
   describe('deleteSnitch', function () {
@@ -235,7 +304,7 @@ describe('APIClient', function () {
         client.deleteSnitch();
       };
 
-      expect(error).toThrowError('Missing parameter');
+      expect(error).toThrowError('Missing snitch');
     });
 
     it('should error when non-snitch given', function () {
@@ -243,7 +312,7 @@ describe('APIClient', function () {
         client.deleteSnitch({});
       };
 
-      expect(error).toThrowError('Invalid parameter');
+      expect(error).toThrowError('Invalid snitch');
     });
 
     it('should error when snitch has no token', function () {
@@ -258,7 +327,12 @@ describe('APIClient', function () {
       expect(error).toThrowError('Missing token');
     });
 
-    it('should make a request to delete the snitch', function () {
+    it('should accept a snitch id', function () {
+      client.deleteSnitch('c2354d53d2');
+      expect(client.makeRequest).toHaveBeenCalledWith('DELETE', '/snitches/c2354d53d2');
+    });
+
+    it('should accept a snitch object', function () {
       var snitch = new Snitch({
         name: 'Hello',
         interval: '15_minute'
