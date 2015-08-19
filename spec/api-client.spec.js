@@ -250,7 +250,72 @@ describe('APIClient', function () {
   });
 
   describe('removeTag', function () {
+    it('should error when no snitch given', function () {
+      var error = function () {
+        client.removeTag();
+      };
 
+      expect(error).toThrowError('Missing snitch');
+    });
+
+    it('should error when non-snitch object given', function () {
+      var error = function () {
+        client.removeTag({});
+      };
+
+      expect(error).toThrowError('Invalid snitch');
+    });
+
+    it('should error when snitch has no token', function () {
+      var error = function () {
+        var snitch = new Snitch({
+          name: 'Hello',
+          interval: '15_minute'
+        });
+        client.removeTag(snitch);
+      };
+
+      expect(error).toThrowError('Missing token');
+    });
+
+    it('should error when no tag given', function () {
+      var error = function () {
+        client.removeTag('abc123');
+      };
+
+      expect(error).toThrowError('Missing tag');
+    });
+
+    it('should error when invalid tag given', function () {
+      var error = function () {
+        client.removeTag('abc123', {});
+      };
+
+      expect(error).toThrowError('Invalid tag');
+    });
+
+    it('should error when empty tag given', function () {
+      var error = function () {
+        client.removeTag('abc123', '');
+      };
+
+      expect(error).toThrowError('Missing tag');
+    });
+
+    it('should accept a token and tag', function () {
+      client.removeTag('c2354d53d2', 'production');
+      expect(client.makeRequest).toHaveBeenCalledWith('DELETE', '/snitches/c2354d53d2/tags/production');
+    });
+
+    it('should accept a snitch object and tag', function () {
+      var snitch = new Snitch({
+        name: 'Hello',
+        interval: '15_minute'
+      });
+      snitch.token = 'c2354d53d2';
+      client.removeTag(snitch, 'production');
+      expect(client.makeRequest).toHaveBeenCalledWith('DELETE', '/snitches/c2354d53d2/tags/production');
+    });
   });
 
   describe('pauseSnitch', function () {
